@@ -55,6 +55,21 @@
     <ClCompile Include="GeneratedFiles\qrc_ChessMusicGUI.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="CSVReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="common\common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="common\common_platform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ChessMusicGUI.h">
@@ -71,8 +86,28 @@
     <ClInclude Include="GeneratedFiles\ui_ChessMusicGUI.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="CSVReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\common_platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChessMusicGUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\studio\lib\fmodstudioL64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Move.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Game.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
