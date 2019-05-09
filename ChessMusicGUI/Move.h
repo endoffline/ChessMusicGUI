@@ -3,19 +3,18 @@
 #include <QStandardItemModel>
 #include <QObject>
 #include <QString>
+#include <iostream>
 namespace Models {
 	
-	class Move : public QObject {
-		Q_OBJECT
-		Q_DISABLE_COPY(Move)
+	class Move {
 
-		Q_PROPERTY(QString turn READ turn)
-		Q_PROPERTY(QString score READ score)
 	public:
-		explicit Move(QString turn, QString score, QObject* parent = nullptr);
-
+		Move(QString turn = "0", QString score = "0");
+		//Move(const Move &move);
+		//Move &operator=(const Move &other);
 		QString turn() const;
 		QString score() const;
+		friend std::ostream& operator<<(std::ostream& out, const Move& move);
 
 	private:
 		QString m_turn;

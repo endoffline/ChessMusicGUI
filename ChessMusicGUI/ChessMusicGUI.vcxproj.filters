@@ -95,6 +95,9 @@
     <ClInclude Include="common\common_platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChessMusicGUI.rc" />
@@ -103,9 +106,6 @@
     <None Include="..\studio\lib\fmodstudioL64.dll" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="Move.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="Game.h">
       <Filter>Header Files</Filter>
     </QtMoc>

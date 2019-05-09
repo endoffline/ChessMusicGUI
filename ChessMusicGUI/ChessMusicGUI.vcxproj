@@ -64,7 +64,7 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -151,7 +151,7 @@
     <ClInclude Include="CSVReader.h" />
     <QtMoc Include="Game.h" />
     <ClInclude Include="GeneratedFiles\ui_ChessMusicGUI.h" />
-    <QtMoc Include="Move.h" />
+    <ClInclude Include="Move.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ChessMusicGUI.qrc">

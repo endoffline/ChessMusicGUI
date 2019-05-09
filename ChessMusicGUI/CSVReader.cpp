@@ -5,6 +5,8 @@
 #include <fstream>
 
 #include "CSVReader.h"
+#include "Move.h"
+#include "Game.h"
 
 
 
@@ -49,4 +51,29 @@ std::vector<std::vector<std::string>> CSVReader::getData()
 	file.close();
 
 	return values;
+}
+
+Models::Game CSVReader::loadGame() {
+	std::ifstream file = loadCSVFile();
+
+	std::string line;
+	Models::Game game;
+	while (std::getline(file, line))
+	{
+		std::string lineValue;
+		std::vector<std::string> lineValues;
+		std::stringstream ss(line);
+
+		while (std::getline(ss, lineValue, delimeter))
+		{
+			lineValues.push_back(lineValue);
+		}
+
+		Models::Move move(QString::fromStdString(lineValues[0]), QString::fromStdString(lineValues[4]));
+		game.addMove(move);
+	}
+
+	file.close();
+
+	return game;
 }
