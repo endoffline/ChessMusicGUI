@@ -5,7 +5,7 @@
 namespace Models {
 	
 	Game::Game(QString path, QList<Move> moves, int current_move, QObject* parent) : m_path(path), m_moves(moves), m_current_move(current_move), QObject(parent) {
-
+		
 	}
 
 	Game::Game(const Game& game) {
@@ -22,9 +22,6 @@ namespace Models {
 		}
 		return *this;
 	}
-	//QLinkedList<Move> &Game::moves() const {
-	//	return m_moves;
-	//}
 
 	Move Game::current_move() const {
 		return (m_moves.at(m_current_move));
@@ -40,14 +37,14 @@ namespace Models {
 
 	Move Game::nextMove() {
 		
-		if (m_current_move < m_moves.size()) {
+		if (m_current_move < m_moves.size() -1) {
 			m_current_move++;
 		}
 		return m_moves.at(m_current_move);
 	}
 
 	Move Game::previousMove() {
-		if (m_current_move > c_min_Index) {
+		if (m_current_move > c_min_index + 1) {
 			m_current_move--;
 		}
 		return m_moves.at(m_current_move);
@@ -73,13 +70,17 @@ namespace Models {
 	void Game::nextMoveReceived() {
 		this->nextMove();
 		qDebug() << "next clicked" << m_current_move;
-		emit valuesChanged();
+		emit valuesChanged(currentImagePath());
 	}
 
 	void Game::previousMoveReceived() {
 		this->previousMove();
 		qDebug() << "previous clicked" << m_current_move;
-		emit valuesChanged();
+		emit valuesChanged(currentImagePath());
+	}
+
+	QString Game::currentImagePath() {
+		return m_path + "images/" + QString::number(m_current_move+1) + ".svg";
 	}
 
 	/*QString Game::path() const {

@@ -9,9 +9,12 @@ public:
 	CSVReader(std::string filename, char delimeter = ';');
 	std::vector<std::vector<std::string>> getData();
 	Models::Game loadGame();
+
+	friend bool stob(std::string s);
 private:
-	std::string filename;
-	char delimeter;
+	static const std::string m_filename;
+	std::string m_path;
+	char m_delimeter;
 	
 	std::ifstream loadCSVFile();
 

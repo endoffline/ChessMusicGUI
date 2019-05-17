@@ -105,6 +105,7 @@
     <ClCompile Include="common\common.cpp" />
     <ClCompile Include="common\common_platform.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="FMODController.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_ChessMusicGUI.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -150,6 +151,7 @@
     <ClInclude Include="common\common_platform.h" />
     <ClInclude Include="CSVReader.h" />
     <QtMoc Include="Game.h" />
+    <ClInclude Include="FMODController.h" />
     <ClInclude Include="GeneratedFiles\ui_ChessMusicGUI.h" />
     <ClInclude Include="Move.h" />
   </ItemGroup>
