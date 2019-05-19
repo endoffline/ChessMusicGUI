@@ -101,9 +101,6 @@
     <ClInclude Include="Move.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FMODController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChessMusicGUI.rc" />
@@ -113,6 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Game.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FMODController.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

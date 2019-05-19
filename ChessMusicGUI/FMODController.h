@@ -5,6 +5,7 @@
 #include "./common/common.h"
 #include <string>
 #include <vector>
+#include "Move.h"
 
 struct CallbackInfo
 {
@@ -12,11 +13,17 @@ struct CallbackInfo
 	std::vector<std::string> mEntries;
 };
 
-class FMODController {
+class FMODController : public QObject {
+	Q_OBJECT
 public:
 
 	FMODController();
+	
+	void markerAddString(CallbackInfo* info, const char* format, ...);
 	FMOD_RESULT F_CALLBACK markerCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void *parameters);
+
+public Q_SLOTS:
+	void updateFMODValues(Models::Move move);
 private:
 	static const int MAX_ENTRIES = 6;
 	static const char *INTENSITY_STR;
@@ -39,4 +46,11 @@ private:
 	FMOD::Studio::EventDescription *m_eventDescription;
 	FMOD::Studio::EventInstance *m_eventInstance;
 	CallbackInfo m_info;
+
+	float m_fmod_intensity;
+	float m_fmod_leadingPlayer;
+	float m_fmod_possibleMoves;
+	float m_fmod_isCheck;
+	float m_fmod_moveCategory;
+	float m_fmod_attackersCount;
 };

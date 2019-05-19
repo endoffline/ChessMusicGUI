@@ -25,6 +25,7 @@ ChessMusicGUI::ChessMusicGUI(QWidget *parent)
 	connect(ui.backButton, &QPushButton::clicked, &m_game, &Models::Game::previousMoveReceived);
 	//connect(&m_game, &Models::Game::gameLoaded, this, &ChessMusicGUI::initValues);
 	connect(&m_game, &Models::Game::valuesChanged, this, &ChessMusicGUI::updateValues);
+	connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODController::updateFMODValues);
 	initValues(m_game.currentImagePath());
 }
 
@@ -37,6 +38,8 @@ void ChessMusicGUI::initValues(QString path) {
 	//ui.graphicsView->setGeometry(400, 400, 400, 400);
 	ui.graphicsView->setScene(m_scene);
 	ui.graphicsView->show();
+
+	
 }
 
 void ChessMusicGUI::updateValues(QString path) {
@@ -48,6 +51,7 @@ void ChessMusicGUI::updateValues(QString path) {
 	m_scene->addItem(m_svg);
 	ui.graphicsView->setScene(m_scene);
 	ui.graphicsView->show();
+	emit updateFMOD(m_game.current_move());
 }
 
 

@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QList>
 #include "Move.h"
-#include "iostream"
+#include <iostream>
 namespace Models {
 
 	class Game : public QObject {
