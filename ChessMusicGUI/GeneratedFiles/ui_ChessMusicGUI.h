@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHBoxLayout>
@@ -84,6 +85,7 @@ public:
     QLineEdit *guarded_pieces_count_lineEdit;
     QLineEdit *is_castling_lineEdit;
     QHBoxLayout *horizontalLayout;
+    QCheckBox *autoplay_checkBox;
     QPushButton *backButton;
     QPushButton *nextButton;
 
@@ -392,6 +394,11 @@ public:
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(-1, 0, -1, -1);
+        autoplay_checkBox = new QCheckBox(ChessMusicGUIClass);
+        autoplay_checkBox->setObjectName(QString::fromUtf8("autoplay_checkBox"));
+
+        horizontalLayout->addWidget(autoplay_checkBox);
+
         backButton = new QPushButton(ChessMusicGUIClass);
         backButton->setObjectName(QString::fromUtf8("backButton"));
 
@@ -440,6 +447,7 @@ public:
         guards_count_label->setText(QApplication::translate("ChessMusicGUIClass", "No of guards", nullptr));
         guarded_pieces_label->setText(QApplication::translate("ChessMusicGUIClass", "Guarded pieces", nullptr));
         guarded_pieces_count_label->setText(QApplication::translate("ChessMusicGUIClass", "No of guarded pieces", nullptr));
+        autoplay_checkBox->setText(QApplication::translate("ChessMusicGUIClass", "Autoplay", nullptr));
         backButton->setText(QApplication::translate("ChessMusicGUIClass", "Back", nullptr));
         nextButton->setText(QApplication::translate("ChessMusicGUIClass", "Next", nullptr));
     } // retranslateUi

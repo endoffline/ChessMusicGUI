@@ -70,13 +70,13 @@ namespace Models {
 	void Game::nextMoveReceived() {
 		this->nextMove();
 		qDebug() << "next clicked" << m_current_move;
-		emit valuesChanged(currentImagePath());
+		emit valuesChanged();
 	}
 
 	void Game::previousMoveReceived() {
 		this->previousMove();
 		qDebug() << "previous clicked" << m_current_move;
-		emit valuesChanged(currentImagePath());
+		emit valuesChanged();
 	}
 
 	QString Game::currentImagePath() {

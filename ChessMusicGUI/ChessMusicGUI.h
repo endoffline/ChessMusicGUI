@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "Move.h"
 #include "FMODController.h"
+#include "AutoplayChess.h"
 
 class ChessMusicGUI : public QWidget
 {
@@ -16,9 +17,9 @@ class ChessMusicGUI : public QWidget
 public:
 	ChessMusicGUI(QWidget *parent = Q_NULLPTR);
 	Models::Game game();
-	void initValues(QString path);
+	void initValues();
 public Q_SLOTS:
-	void updateValues(QString path);
+	void updateValues();
 Q_SIGNALS:
 	void updateFMOD(Models::Move current_move);
 private:
@@ -27,4 +28,6 @@ private:
 	QGraphicsSvgItem *m_svg;
 	QGraphicsScene *m_scene;
 	FMODController m_fmod_controller;
+	AutoplayChess *m_autoplay;
+	QThread *m_autoplay_thread;
 };

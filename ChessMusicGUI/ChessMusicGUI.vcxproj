@@ -101,6 +101,7 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AutoplayChess.cpp" />
     <ClCompile Include="ChessMusicGUI.cpp" />
     <ClCompile Include="common\common.cpp" />
     <ClCompile Include="common\common_platform.cpp" />
@@ -147,6 +148,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="AutoplayChess.h" />
     <ClInclude Include="common\common.h" />
     <ClInclude Include="common\common_platform.h" />
     <ClInclude Include="CSVReader.h" />

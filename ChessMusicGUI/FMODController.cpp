@@ -123,6 +123,7 @@ FMOD_RESULT F_CALLBACK FMODController::markerCallback(FMOD_STUDIO_EVENT_CALLBACK
 }
 
 void FMODController::updateFMODValues(Models::Move move) {
+	qDebug() << "3";
 	int turn = 0;
 	int score = 0;
 	int isCheck = 0;

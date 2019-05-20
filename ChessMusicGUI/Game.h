@@ -33,7 +33,7 @@ namespace Models {
 		void nextMoveReceived();
 		void previousMoveReceived();
 	Q_SIGNALS:
-		void valuesChanged(QString path);
+		void valuesChanged();
 	private:
 		//QString path() const;
 		//QLinkedList<Move> moves() const;
