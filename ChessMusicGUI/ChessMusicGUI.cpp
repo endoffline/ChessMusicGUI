@@ -28,15 +28,19 @@ ChessMusicGUI::ChessMusicGUI(QWidget *parent)
 	connect(ui.nextButton, &QPushButton::clicked, &m_game, &Models::Game::nextMoveReceived);
 	connect(ui.backButton, &QPushButton::clicked, &m_game, &Models::Game::previousMoveReceived);
 	connect(ui.autoplay_checkBox, &QCheckBox::clicked, m_autoplay, &AutoplayChess::autoplay);
-	//connect(&m_game, &Models::Game::gameLoaded, this, &ChessMusicGUI::initValues);
 	connect(&m_game, &Models::Game::valuesChanged, this, &ChessMusicGUI::updateValues);
 	connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODController::updateFMODValues);
-	connect(m_autoplay, &AutoplayChess::nextMove, this, &ChessMusicGUI::updateValues);
-
+	connect(m_autoplay, &AutoplayChess::nextMove, &m_game, &Models::Game::nextMoveReceived);
+	
 	
 	m_autoplay_thread->start();
 	
 	
+}
+
+ChessMusicGUI::~ChessMusicGUI() {
+	m_autoplay_thread->quit();
+	m_autoplay_thread->wait();
 }
 
 void ChessMusicGUI::initValues() {
@@ -55,6 +59,7 @@ void ChessMusicGUI::initValues() {
 
 void ChessMusicGUI::updateValues() {
 	qDebug() << "1";
+	qDebug() << QString::number(m_game.current_move().turn()) << QString::fromStdString(m_game.current_move().san()) << m_game.current_move().is_check() << m_game.current_move().is_capture() << m_game.current_move().is_castling();
 	ui.turn_lineEdit->setText(QString::number(m_game.current_move().turn()));
 	ui.san_lineEdit->setText(QString::fromStdString(m_game.current_move().san()));
 	ui.lan_lineEdit->setText(QString::fromStdString(m_game.current_move().lan()));

@@ -36,6 +36,7 @@ namespace Models {
 		m_lan(lan),
 		m_score(score),
 		m_move_count(move_count),
+		m_best_move(best_move),
 		m_best_move_score(best_move_score),
 		m_best_move_score_difference(best_move_score_difference),
 		m_best_move_score_difference_category(best_move_score_difference_category),

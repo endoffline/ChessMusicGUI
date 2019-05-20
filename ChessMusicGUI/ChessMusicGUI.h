@@ -16,6 +16,7 @@ class ChessMusicGUI : public QWidget
 
 public:
 	ChessMusicGUI(QWidget *parent = Q_NULLPTR);
+	~ChessMusicGUI();
 	Models::Game game();
 	void initValues();
 public Q_SLOTS:

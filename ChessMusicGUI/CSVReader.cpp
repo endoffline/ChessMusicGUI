@@ -107,9 +107,8 @@ Models::Game CSVReader::loadGame() {
 }
 
 bool stob(std::string s) {
-	bool b;
-	std::istringstream (s) >> std::boolalpha >> b;
-	return b;
+	std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+	return (s == "true" || s == "1");
 }
 
 

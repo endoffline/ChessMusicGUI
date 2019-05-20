@@ -35,10 +35,6 @@ namespace Models {
 	Q_SIGNALS:
 		void valuesChanged();
 	private:
-		//QString path() const;
-		//QLinkedList<Move> moves() const;
-		//QLinkedListIterator<Move>& moves_iterator() const;
-		//Move& current_move() const;
 		static const int c_min_index = -1;
 		QString m_path;
 		QList<Move> m_moves;

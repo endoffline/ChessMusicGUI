@@ -13,8 +13,8 @@ public Q_SLOTS:
 	void autoplay(bool autoplay);
 	void play();
 Q_SIGNALS:
-	void nextMove();
 	void startAutoplay();
+	void nextMove();
 
 private:
 	QTimer *m_timer;
