@@ -80,7 +80,7 @@ namespace Models {
 	}
 
 	QString Game::currentImagePath() {
-		return m_path + "images/" + QString::number(m_current_move+1) + ".svg";
+		return m_path + "/images/" + QString::number(m_current_move+1) + ".svg";
 	}
 
 	/*QString Game::path() const {

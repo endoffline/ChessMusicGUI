@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1088</width>
-    <height>624</height>
+    <height>749</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,59 +17,38 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
        <property name="rightMargin">
         <number>0</number>
        </property>
        <item>
-        <widget class="QGraphicsView" name="graphicsView"/>
+        <widget class="QGraphicsView" name="graphicsView">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>400</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>600</width>
+           <height>600</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item>
-        <layout class="QFormLayout" name="formLayout_2">
-         <property name="bottomMargin">
-          <number>0</number>
+        <widget class="QPlainTextEdit" name="logTextEdit">
+         <property name="maximumSize">
+          <size>
+           <width>600</width>
+           <height>16777215</height>
+          </size>
          </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="threatened_guarded_pieces_label">
-           <property name="text">
-            <string>Threatened/guarded pieces</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="threatened_guarded_pieces_count_label">
-           <property name="text">
-            <string>No of Threatened/guarded pieces</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="unopposed_threats_count_label">
-           <property name="text">
-            <string>No of unopposed threats</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="threatened_guarded_pieces_lineEdit"/>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="threatened_guarded_pieces_count_lineEdit"/>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="unopposed_threats_count_lineEdit"/>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="unopposed_threats_lineEdit"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="unopposed_threats_label">
-           <property name="text">
-            <string>Unopposed threats</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         <property name="plainText">
+          <string/>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -78,225 +57,275 @@
        <property name="rightMargin">
         <number>20</number>
        </property>
-       <item row="0" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="turn_label">
          <property name="text">
           <string>Turn</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="QLineEdit" name="turn_lineEdit"/>
        </item>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="san_label">
          <property name="text">
           <string>SAN</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
         <widget class="QLineEdit" name="san_lineEdit"/>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="lan_label">
          <property name="text">
           <string>LAN</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QLineEdit" name="lan_lineEdit"/>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="score_label">
          <property name="text">
           <string>Score</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="QLineEdit" name="score_lineEdit"/>
        </item>
-       <item row="4" column="0">
+       <item row="5" column="0">
         <widget class="QLabel" name="move_count_label">
          <property name="text">
           <string>No of moves</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <widget class="QLineEdit" name="move_count_lineEdit"/>
        </item>
-       <item row="5" column="0">
+       <item row="6" column="0">
         <widget class="QLabel" name="best_move_label">
          <property name="text">
           <string>Best move</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <widget class="QLineEdit" name="best_move_lineEdit"/>
        </item>
-       <item row="6" column="0">
+       <item row="7" column="0">
         <widget class="QLabel" name="best_move_score_label">
          <property name="text">
           <string>Best move's score</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item row="7" column="1">
         <widget class="QLineEdit" name="best_move_score_lineEdit"/>
        </item>
-       <item row="7" column="0">
+       <item row="8" column="0">
         <widget class="QLabel" name="best_move_score_difference_label">
          <property name="text">
           <string>Difference</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1">
+       <item row="8" column="1">
         <widget class="QLineEdit" name="best_move_score_difference_lineEdit"/>
        </item>
-       <item row="8" column="0">
+       <item row="9" column="0">
         <widget class="QLabel" name="best_move_score_difference_category_label">
          <property name="text">
           <string>Move category</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="1">
+       <item row="9" column="1">
         <widget class="QLineEdit" name="best_move_score_difference_category_lineEdit"/>
        </item>
-       <item row="9" column="0">
+       <item row="10" column="0">
         <widget class="QLabel" name="is_check_label">
          <property name="text">
           <string>Is check?</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1">
+       <item row="10" column="1">
         <widget class="QLineEdit" name="is_check_lineEdit"/>
        </item>
-       <item row="10" column="0">
+       <item row="11" column="0">
         <widget class="QLabel" name="is_capture_label">
          <property name="text">
           <string>Is capture?</string>
          </property>
         </widget>
        </item>
-       <item row="10" column="1">
+       <item row="11" column="1">
         <widget class="QLineEdit" name="is_capture_lineEdit"/>
        </item>
-       <item row="11" column="0">
+       <item row="12" column="0">
         <widget class="QLabel" name="is_castling_label">
          <property name="text">
           <string>Is castling?</string>
          </property>
         </widget>
        </item>
-       <item row="12" column="0">
+       <item row="12" column="1">
+        <widget class="QLineEdit" name="is_castling_lineEdit"/>
+       </item>
+       <item row="13" column="0">
         <widget class="QLabel" name="possible_moves_count_label">
          <property name="text">
           <string>No of possible moves</string>
          </property>
         </widget>
        </item>
-       <item row="12" column="1">
+       <item row="13" column="1">
         <widget class="QLineEdit" name="possible_moves_count_lineEdit"/>
        </item>
-       <item row="13" column="0">
+       <item row="14" column="0">
         <widget class="QLabel" name="is_capture_count_label">
          <property name="text">
           <string>No of possible captures</string>
          </property>
         </widget>
        </item>
-       <item row="13" column="1">
+       <item row="14" column="1">
         <widget class="QLineEdit" name="is_capture_count_lineEdit"/>
        </item>
-       <item row="14" column="0">
+       <item row="15" column="0">
         <widget class="QLabel" name="attackers_label">
          <property name="text">
           <string>Attackers</string>
          </property>
         </widget>
        </item>
-       <item row="14" column="1">
+       <item row="15" column="1">
         <widget class="QLineEdit" name="attackers_lineEdit"/>
        </item>
-       <item row="15" column="0">
+       <item row="16" column="0">
         <widget class="QLabel" name="attackers_count_label">
          <property name="text">
           <string>No of Attackers</string>
          </property>
         </widget>
        </item>
-       <item row="15" column="1">
+       <item row="16" column="1">
         <widget class="QLineEdit" name="attackers_count_lineEdit"/>
        </item>
-       <item row="16" column="0">
+       <item row="17" column="0">
         <widget class="QLabel" name="threatened_pieces_label">
          <property name="text">
           <string>Threatened pieces</string>
          </property>
         </widget>
        </item>
-       <item row="16" column="1">
+       <item row="17" column="1">
         <widget class="QLineEdit" name="threatened_pieces_lineEdit"/>
        </item>
-       <item row="17" column="0">
+       <item row="18" column="0">
         <widget class="QLabel" name="threatened_pieces_count_label">
          <property name="text">
           <string>No of threatened pieces</string>
          </property>
         </widget>
        </item>
-       <item row="17" column="1">
+       <item row="18" column="1">
         <widget class="QLineEdit" name="threatened_pieces_count_lineEdit"/>
        </item>
-       <item row="18" column="0">
+       <item row="19" column="0">
         <widget class="QLabel" name="guards_label">
          <property name="text">
           <string>Guards</string>
          </property>
         </widget>
        </item>
-       <item row="18" column="1">
+       <item row="19" column="1">
         <widget class="QLineEdit" name="guards_lineEdit"/>
        </item>
-       <item row="19" column="0">
+       <item row="20" column="0">
         <widget class="QLabel" name="guards_count_label">
          <property name="text">
           <string>No of guards</string>
          </property>
         </widget>
        </item>
-       <item row="19" column="1">
+       <item row="20" column="1">
         <widget class="QLineEdit" name="guards_count_lineEdit"/>
        </item>
-       <item row="20" column="0">
+       <item row="21" column="0">
         <widget class="QLabel" name="guarded_pieces_label">
          <property name="text">
           <string>Guarded pieces</string>
          </property>
         </widget>
        </item>
-       <item row="20" column="1">
+       <item row="21" column="1">
         <widget class="QLineEdit" name="guarded_pieces_lineEdit"/>
        </item>
-       <item row="21" column="0">
+       <item row="22" column="0">
         <widget class="QLabel" name="guarded_pieces_count_label">
          <property name="text">
           <string>No of guarded pieces</string>
          </property>
         </widget>
        </item>
-       <item row="21" column="1">
+       <item row="22" column="1">
         <widget class="QLineEdit" name="guarded_pieces_count_lineEdit"/>
        </item>
-       <item row="11" column="1">
-        <widget class="QLineEdit" name="is_castling_lineEdit"/>
+       <item row="23" column="1">
+        <widget class="QLineEdit" name="threatened_guarded_pieces_lineEdit"/>
+       </item>
+       <item row="23" column="0">
+        <widget class="QLabel" name="threatened_guarded_pieces_label">
+         <property name="text">
+          <string>Threatened/guarded pieces</string>
+         </property>
+        </widget>
+       </item>
+       <item row="24" column="0">
+        <widget class="QLabel" name="threatened_guarded_pieces_count_label">
+         <property name="text">
+          <string>No of Threatened/guarded pieces</string>
+         </property>
+        </widget>
+       </item>
+       <item row="25" column="0">
+        <widget class="QLabel" name="unopposed_threats_label">
+         <property name="text">
+          <string>Unopposed threats</string>
+         </property>
+        </widget>
+       </item>
+       <item row="26" column="0">
+        <widget class="QLabel" name="unopposed_threats_count_label">
+         <property name="text">
+          <string>No of unopposed threats</string>
+         </property>
+        </widget>
+       </item>
+       <item row="24" column="1">
+        <widget class="QLineEdit" name="threatened_guarded_pieces_count_lineEdit"/>
+       </item>
+       <item row="25" column="1">
+        <widget class="QLineEdit" name="unopposed_threats_lineEdit"/>
+       </item>
+       <item row="26" column="1">
+        <widget class="QLineEdit" name="unopposed_threats_count_lineEdit"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="fullmove_number_lineEdit"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="fullmove_number_label">
+         <property name="text">
+          <string>Full move number</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

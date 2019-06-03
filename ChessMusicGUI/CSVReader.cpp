@@ -19,7 +19,7 @@ CSVReader::CSVReader(std::string path, char delimeter)
 // load the CSV file
 std::ifstream CSVReader::loadCSVFile()
 {
-	std::ifstream csvFile(m_path + m_filename);
+	std::ifstream csvFile(m_path + "/" + m_filename);
 	if (!csvFile.is_open())
 	{
 		std::cout << "Wrong path!" << std::endl;
@@ -72,31 +72,32 @@ Models::Game CSVReader::loadGame() {
 
 		Models::Move move(
 			std::stoi(lineValues[0]),
-			lineValues[1],
+			stob(lineValues[1]),
 			lineValues[2],
-			std::stoi(lineValues[3]),
+			lineValues[3],
 			std::stoi(lineValues[4]),
-			lineValues[5],
-			std::stoi(lineValues[6]),
+			std::stoi(lineValues[5]),
+			lineValues[6],
 			std::stoi(lineValues[7]),
 			std::stoi(lineValues[8]),
-			stob(lineValues[9]),
+			std::stoi(lineValues[9]),
 			stob(lineValues[10]),
 			stob(lineValues[11]),
-			std::stoi(lineValues[12]),
+			stob(lineValues[12]),
 			std::stoi(lineValues[13]),
-			lineValues[14],
-			std::stoi(lineValues[15]),
-			lineValues[16],
-			std::stoi(lineValues[17]),
-			lineValues[18],
-			std::stoi(lineValues[19]),
-			lineValues[20],
-			std::stoi(lineValues[21]),
-			lineValues[22],
-			std::stoi(lineValues[23]),
-			lineValues[24],
-			std::stoi(lineValues[25])
+			std::stoi(lineValues[14]),
+			lineValues[15],
+			std::stoi(lineValues[16]),
+			lineValues[17],
+			std::stoi(lineValues[18]),
+			lineValues[19],
+			std::stoi(lineValues[20]),
+			lineValues[21],
+			std::stoi(lineValues[22]),
+			lineValues[23],
+			std::stoi(lineValues[24]),
+			lineValues[25],
+			std::stoi(lineValues[26])
 		);
 		game.addMove(move);
 	}

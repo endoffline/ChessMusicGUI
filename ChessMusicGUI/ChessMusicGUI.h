@@ -19,6 +19,7 @@ public:
 	~ChessMusicGUI();
 	Models::Game game();
 	void initValues();
+	void ChessMusicGUI::appendLogMessage(QPlainTextEdit *textEdit, const std::string& lan);
 public Q_SLOTS:
 	void updateValues();
 Q_SIGNALS:

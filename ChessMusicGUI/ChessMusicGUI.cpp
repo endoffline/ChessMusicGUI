@@ -3,6 +3,7 @@
 #include "CSVReader.h"
 #include <QThread>
 #include <qDebug>
+#include <qfiledialog.h>
 
 Models::Game ChessMusicGUI::game() {
 	return m_game;
@@ -12,9 +13,15 @@ ChessMusicGUI::ChessMusicGUI(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	QString folder = "";
+
+	while (folder == "") {
+		folder = QFileDialog::getExistingDirectory(this, tr("Open Game folder"), ".");
+	}
 	
 	//CSVReader reader("./csv/kasparov_karpov_1986.csv");
-	CSVReader reader("./games/kasparov_karpov_1986/");
+	//CSVReader reader("./games/kasparov_karpov_1986/");
+	CSVReader reader(folder.toStdString());
 	m_game = reader.loadGame();
 	initValues();
 	
@@ -53,13 +60,65 @@ void ChessMusicGUI::initValues() {
 	//ui.graphicsView->setGeometry(400, 400, 400, 400);
 	ui.graphicsView->setScene(m_scene);
 	ui.graphicsView->show();
+	ui.logTextEdit->ensureCursorVisible();
 
+}
+
+void ChessMusicGUI::appendLogMessage(QPlainTextEdit *textEdit, const std::string& lan) {
+	std::string text;
+	std::map<char, std::string> conversionMap = {
+		{'N', "Knight"},
+		{'B', "Bishop"},
+		{'R', "Rook"},
+		{'Q', "Queen"},
+		{'K', "King"},
+		{'-', ""},
+		{'x', " and captures a piece"},
+		{'+', " and checks the king"},
+		{'O', "Castling"}
+	};
+	/*conversionMap['N'] = "Knight";
+	conversionMap['B'] = "Bishop";
+	conversionMap['R'] = "Rook";
+	conversionMap['Q'] = "Queen";
+	conversionMap['K'] = "King";
+	conversionMap['-'] = "";
+	conversionMap['x'] = "and captures a piece";
+	conversionMap['+'] = "and checks the king";*/
+	int i = 0;
+
+	char c = lan.at(i++);
+	std::string s = conversionMap[c];
 	
+	if (s == "") {
+		s = "Pawn";
+		i = 0;
+	}
+	text += lan;
+	text += ": ";
+	text += s;
+	if (c != 'O') {
+		text += " moved from ";
+		text += lan.at(i++);
+		text += lan.at(i++);
+		text += " to ";
+		std::string captured = conversionMap[lan.at(i++)];
+		text += lan.at(i++);
+		text += lan.at(i++);
+		text += captured;
+		
+		if (i < lan.length()) {
+			text += conversionMap[lan.at(i++)];
+		}
+	}
+	textEdit->appendPlainText(QString::fromStdString(text));
+
 }
 
 void ChessMusicGUI::updateValues() {
 	qDebug() << "1";
 	qDebug() << QString::number(m_game.current_move().turn()) << QString::fromStdString(m_game.current_move().san()) << m_game.current_move().is_check() << m_game.current_move().is_capture() << m_game.current_move().is_castling();
+	ui.fullmove_number_lineEdit->setText(QString::number(m_game.current_move().fullmove_number()));
 	ui.turn_lineEdit->setText(QString::number(m_game.current_move().turn()));
 	ui.san_lineEdit->setText(QString::fromStdString(m_game.current_move().san()));
 	ui.lan_lineEdit->setText(QString::fromStdString(m_game.current_move().lan()));
@@ -92,6 +151,7 @@ void ChessMusicGUI::updateValues() {
 	m_scene->addItem(m_svg);
 	ui.graphicsView->setScene(m_scene);
 	ui.graphicsView->show();
+	appendLogMessage(ui.logTextEdit, m_game.current_move().lan());
 	qDebug() << "2";
 	emit updateFMOD(m_game.current_move());
 }

@@ -12,7 +12,8 @@ namespace Models {
 
 	public:
 		Move(
-			int turn = 0, 
+			int fullmove_number = 0,
+			bool turn = false, 
 			std::string san = "", 
 			std::string lan = "", 
 			int score = 0, 
@@ -40,7 +41,8 @@ namespace Models {
 			int unopposed_threats_count = 0
 		);
 
-		int turn() const;
+		int fullmove_number() const;
+		bool turn() const;
 		std::string san() const;
 		std::string lan() const;
 		int score() const;
@@ -74,7 +76,8 @@ namespace Models {
 		friend std::ostream& operator<<(std::ostream& out, const Move& move);
 
 	private:
-		int m_turn;
+		int m_fullmove_number;
+		bool m_turn;
 		std::string m_san;
 		std::string m_lan;
 		int m_score;

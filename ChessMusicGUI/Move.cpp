@@ -5,7 +5,8 @@
 namespace Models {
 
 	Move::Move(
-		int turn,
+		int fullmove_number,
+		bool turn,
 		std::string san,
 		std::string lan,
 		int score,
@@ -31,7 +32,8 @@ namespace Models {
 		int threatened_guarded_pieces_count,
 		std::string unopposed_threats,
 		int unopposed_threats_count
-	) : m_turn(turn),
+	) : m_fullmove_number(fullmove_number),
+		m_turn(turn),
 		m_san(san),
 		m_lan(lan),
 		m_score(score),
@@ -60,7 +62,11 @@ namespace Models {
 
 	}
 
-	int Move::turn() const {
+	int Move::fullmove_number() const {
+		return m_fullmove_number;
+	}
+
+	bool Move::turn() const {
 		return m_turn;
 	}
 
