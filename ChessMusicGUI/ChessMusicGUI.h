@@ -7,7 +7,8 @@
 #include "ui_ChessMusicGUI.h"
 #include "Game.h"
 #include "Move.h"
-#include "FMODController.h"
+//#include "FMODController.h"
+#include "FMODSoundscapeController.h"
 #include "AutoplayChess.h"
 
 class ChessMusicGUI : public QWidget
@@ -29,7 +30,8 @@ private:
 	Models::Game m_game;
 	QGraphicsSvgItem *m_svg;
 	QGraphicsScene *m_scene;
-	FMODController m_fmod_controller;
+	//FMODController m_fmod_controller;
+	FMODSoundscapeController m_fmod_controller;
 	AutoplayChess *m_autoplay;
 	QThread *m_autoplay_thread;
 };

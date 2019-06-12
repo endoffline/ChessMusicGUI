@@ -36,7 +36,8 @@ ChessMusicGUI::ChessMusicGUI(QWidget *parent)
 	connect(ui.backButton, &QPushButton::clicked, &m_game, &Models::Game::previousMoveReceived);
 	connect(ui.autoplay_checkBox, &QCheckBox::clicked, m_autoplay, &AutoplayChess::autoplay);
 	connect(&m_game, &Models::Game::valuesChanged, this, &ChessMusicGUI::updateValues);
-	connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODController::updateFMODValues);
+	//connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODController::updateFMODValues);
+	connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODSoundscapeController::updateFMODValues);
 	connect(m_autoplay, &AutoplayChess::nextMove, &m_game, &Models::Game::nextMoveReceived);
 	
 	

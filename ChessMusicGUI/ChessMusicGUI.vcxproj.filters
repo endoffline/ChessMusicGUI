@@ -76,6 +76,9 @@
     <ClCompile Include="AutoplayChess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FMODSoundscapeController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ChessMusicGUI.h">
@@ -119,6 +122,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="AutoplayChess.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FMODSoundscapeController.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
