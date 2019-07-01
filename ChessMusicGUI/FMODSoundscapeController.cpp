@@ -61,8 +61,8 @@ FMODSoundscapeController::FMODSoundscapeController() {
 	ERRCHECK(m_eventInstance->start());
 
 	m_sinusWaveDirection = true;
-	m_fluctuatingScore = true;
-	m_sinusWave = 0.0f;
+	m_fluctuatingScore = false;
+	m_sinusWave = -1.0f;
 	//Set initial FMOD Parameters
 	m_fmod_sinusWave = 0.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(SINUS_WAVE_STR, m_fmod_sinusWave));
