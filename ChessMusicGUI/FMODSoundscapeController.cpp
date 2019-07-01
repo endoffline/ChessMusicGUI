@@ -4,8 +4,10 @@
 #include "./common/common.h"
 #include "Move.h"
 #include <qDebug>
-#include <thread>
+//#include <thread>
 #include <chrono>
+#include <QThread>
+#include <QtConcurrent\qtconcurrentrun.h>
 const char *FMODSoundscapeController::SINUS_WAVE_STR= "sinus_wave";
 const char *FMODSoundscapeController::INTENSITY_STR = "Intensity";
 const char *FMODSoundscapeController::LEADING_STR = "Leading";
@@ -58,6 +60,9 @@ FMODSoundscapeController::FMODSoundscapeController() {
 	//	FMOD_STUDIO_EVENT_CALLBACK_SOUND_PLAYED | FMOD_STUDIO_EVENT_CALLBACK_SOUND_STOPPED));
 	ERRCHECK(m_eventInstance->start());
 
+	m_sinusWaveDirection = true;
+	m_fluctuatingScore = true;
+	m_sinusWave = 0.0f;
 	//Set initial FMOD Parameters
 	m_fmod_sinusWave = 0.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(SINUS_WAVE_STR, m_fmod_sinusWave));
@@ -77,6 +82,8 @@ FMODSoundscapeController::FMODSoundscapeController() {
 	ERRCHECK(m_system->update());
 
 	//std::thread loopThread([&]() {this->fmodLoop(); });
+
+	QFuture<void> sinus_thread = QtConcurrent::run(this, &FMODSoundscapeController::fmodLoop, QString("A"));
 
 }
 
@@ -98,18 +105,34 @@ void FMODSoundscapeController::markerAddString(CallbackInfo* info, const char* f
 	Common_Mutex_Leave(&info->mMutex);
 }
 
-void FMODSoundscapeController::fmodLoop(void) {
+// stop when signal is received
+void FMODSoundscapeController::fmodLoop(QString name) {
 	while (true) {
-		if (m_fmod_sinusWave >= 0.0f) {
-			m_fmod_sinusWave += 0.01f;
+		if (m_fluctuatingScore) {
+			if (m_fmod_sinusWave >= 1.0f) {
+				m_sinusWaveDirection = false;
+			}
+			else if (m_fmod_sinusWave <= 0) {
+				m_sinusWaveDirection = true;
+			}
+
+			if (m_sinusWaveDirection) {
+				m_fmod_sinusWave += 0.01f;
+				qDebug() << "blub";
+			}
+			else {
+				m_fmod_sinusWave -= 0.01f;
+			}
 		}
-		else if (m_fmod_sinusWave <= 1.0f) {
-			m_fmod_sinusWave -= 0.01f;
+		else {
+			m_fmod_sinusWave = -1.0f;
 		}
 		ERRCHECK(m_eventInstance->setParameterValue(SINUS_WAVE_STR, m_fmod_sinusWave));
 
 		ERRCHECK(m_system->update());
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		QThread::msleep(100);
+		qDebug() << "sleep" + QString::number(m_fmod_sinusWave);
+		//std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
 

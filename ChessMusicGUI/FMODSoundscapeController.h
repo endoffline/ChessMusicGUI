@@ -25,7 +25,7 @@ public:
 	public Q_SLOTS:
 	void updateFMODValues(Models::Move move);
 private:
-	void fmodLoop(void);
+	void fmodLoop(QString name);
 
 	static const int MAX_ENTRIES = 6;
 	static const char *SINUS_WAVE_STR;
@@ -49,6 +49,10 @@ private:
 	FMOD::Studio::EventDescription *m_eventDescription;
 	FMOD::Studio::EventInstance *m_eventInstance;
 	CallbackInfo m_info;
+
+	bool m_sinusWaveDirection;
+	bool m_fluctuatingScore;
+	float m_sinusWave;
 
 	float m_fmod_sinusWave;
 	float m_fmod_intensity;
