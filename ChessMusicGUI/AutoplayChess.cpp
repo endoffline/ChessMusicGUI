@@ -1,5 +1,6 @@
 #include "AutoplayChess.h"
 #include <qDebug>
+
 AutoplayChess::AutoplayChess(int time, QObject *parent) : m_time(time), m_autoplay(false), QObject(parent) {
 	m_timer = new QTimer(this);
 	connect(this, &AutoplayChess::startAutoplay, this, &AutoplayChess::play);

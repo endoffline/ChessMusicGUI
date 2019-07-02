@@ -7,7 +7,7 @@ class AutoplayChess : public QObject {
 	Q_OBJECT
 
 public:
-	AutoplayChess(int time = 5000, QObject *parent = 0);
+	AutoplayChess(int time = 10000, QObject *parent = 0);
 	
 public Q_SLOTS:
 	void autoplay(bool autoplay);

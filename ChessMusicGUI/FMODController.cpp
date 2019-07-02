@@ -162,7 +162,7 @@ void FMODController::updateFMODValues(Models::Move move) {
 	m_fmod_moveCategory = (float)moveCategory / 10.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(MOVE_CATEGORY_STR, m_fmod_moveCategory));
 
-	attackersCount = move.attackers_count();
+	attackersCount = move.attackers_count_white();
 	m_fmod_attackersCount = (float)attackersCount / 100.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(ATTACKERS_COUNT_STR, m_fmod_attackersCount));
 

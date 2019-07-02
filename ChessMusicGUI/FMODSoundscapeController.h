@@ -24,14 +24,19 @@ public:
 
 	public Q_SLOTS:
 	void updateFMODValues(Models::Move move);
+	void abortSinusWave();
 private:
 	void fmodLoop(QString name);
 
 	static const int MAX_ENTRIES = 6;
 	static const char *SINUS_WAVE_STR;
+	static const char *UNOPPOSED_THREATS_STR;
+	static const char *IS_CAPTURE_STR;
+	static const char *MISTAKE_STR;
+	static const char *POSSIBLE_MOVES_STR;
+
 	static const char *INTENSITY_STR;
 	static const char *LEADING_STR;
-	static const char *POSSIBLE_MOVES_STR;
 	static const char *IS_CHECK_STR;
 	static const char *MOVE_CATEGORY_STR;
 	static const char *ATTACKERS_COUNT_STR;
@@ -52,12 +57,16 @@ private:
 
 	bool m_sinusWaveDirection;
 	bool m_fluctuatingScore;
-	float m_sinusWave;
-
+	bool m_aborted;
 	float m_fmod_sinusWave;
+	float m_fmod_unopposedThreats;
+	float m_fmod_isCapture;
+	float m_fmod_mistake;
+	float m_fmod_possibleMoves;
+
 	float m_fmod_intensity;
 	float m_fmod_leadingPlayer;
-	float m_fmod_possibleMoves;
+	
 	float m_fmod_isCheck;
 	float m_fmod_moveCategory;
 	float m_fmod_attackersCount;

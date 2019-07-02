@@ -38,17 +38,22 @@ ChessMusicGUI::ChessMusicGUI(QWidget *parent)
 	connect(&m_game, &Models::Game::valuesChanged, this, &ChessMusicGUI::updateValues);
 	//connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODController::updateFMODValues);
 	connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODSoundscapeController::updateFMODValues);
+	connect(this, &ChessMusicGUI::closeWindow, &m_fmod_controller, &FMODSoundscapeController::abortSinusWave);
 	connect(m_autoplay, &AutoplayChess::nextMove, &m_game, &Models::Game::nextMoveReceived);
 	
-	
 	m_autoplay_thread->start();
-	
-	
 }
 
 ChessMusicGUI::~ChessMusicGUI() {
 	m_autoplay_thread->quit();
 	m_autoplay_thread->wait();
+}
+
+void ChessMusicGUI::closeEvent(QCloseEvent *event) {
+	qDebug() << "close1";
+	emit closeWindow();
+	
+	QWidget::closeEvent(event);
 }
 
 void ChessMusicGUI::initValues() {
@@ -124,6 +129,8 @@ void ChessMusicGUI::updateValues() {
 	ui.san_lineEdit->setText(QString::fromStdString(m_game.current_move().san()));
 	ui.lan_lineEdit->setText(QString::fromStdString(m_game.current_move().lan()));
 	ui.score_lineEdit->setText(QString::number(m_game.current_move().score()));
+	ui.score_shift_lineEdit->setText(QString::number(m_game.current_move().score_shift()));
+	ui.score_shift_category_lineEdit->setText(QString::number(m_game.current_move().score_shift_category()));
 	ui.move_count_lineEdit->setText(QString::number(m_game.current_move().move_count()));
 	ui.best_move_lineEdit->setText(QString::fromStdString(m_game.current_move().best_move()));
 	ui.best_move_score_lineEdit->setText(QString::number(m_game.current_move().best_move_score()));
@@ -134,18 +141,30 @@ void ChessMusicGUI::updateValues() {
 	ui.is_castling_lineEdit->setText(QVariant(m_game.current_move().is_castling()).toString());
 	ui.possible_moves_count_lineEdit->setText(QString::number(m_game.current_move().possible_moves_count()));
 	ui.is_capture_count_lineEdit->setText(QString::number(m_game.current_move().is_capture_count()));
-	ui.attackers_lineEdit->setText(QString::fromStdString(m_game.current_move().attackers()));
-	ui.attackers_count_lineEdit->setText(QString::number(m_game.current_move().attackers_count()));
-	ui.threatened_pieces_lineEdit->setText(QString::fromStdString(m_game.current_move().threatened_pieces()));
-	ui.threatened_pieces_count_lineEdit->setText(QString::number(m_game.current_move().threatened_pieces_count()));
-	ui.guards_lineEdit->setText(QString::fromStdString(m_game.current_move().guards()));
-	ui.guards_count_lineEdit->setText(QString::number(m_game.current_move().guards_count()));
-	ui.guarded_pieces_lineEdit->setText(QString::fromStdString(m_game.current_move().guarded_pieces()));
-	ui.guarded_pieces_count_lineEdit->setText(QString::number(m_game.current_move().guarded_pieces_count()));
-	ui.threatened_guarded_pieces_lineEdit->setText(QString::fromStdString(m_game.current_move().threatened_guarded_pieces()));
-	ui.threatened_guarded_pieces_count_lineEdit->setText(QString::number(m_game.current_move().threatened_guarded_pieces_count()));
-	ui.unopposed_threats_lineEdit->setText(QString::fromStdString(m_game.current_move().unopposed_threats()));
-	ui.unopposed_threats_count_lineEdit->setText(QString::number(m_game.current_move().unopposed_threats_count()));
+	ui.attackers_white_lineEdit->setText(QString::fromStdString(m_game.current_move().attackers_white()));
+	ui.attackers_count_white_lineEdit->setText(QString::number(m_game.current_move().attackers_count_white()));
+	ui.threatened_pieces_white_lineEdit->setText(QString::fromStdString(m_game.current_move().threatened_pieces_white()));
+	ui.threatened_pieces_count_white_lineEdit->setText(QString::number(m_game.current_move().threatened_pieces_count_white()));
+	ui.guards_white_lineEdit->setText(QString::fromStdString(m_game.current_move().guards_white()));
+	ui.guards_count_white_lineEdit->setText(QString::number(m_game.current_move().guards_count_white()));
+	ui.guarded_pieces_white_lineEdit->setText(QString::fromStdString(m_game.current_move().guarded_pieces_white()));
+	ui.guarded_pieces_count_white_lineEdit->setText(QString::number(m_game.current_move().guarded_pieces_count_white()));
+	ui.threatened_guarded_pieces_white_lineEdit->setText(QString::fromStdString(m_game.current_move().threatened_guarded_pieces_white()));
+	ui.threatened_guarded_pieces_count_white_lineEdit->setText(QString::number(m_game.current_move().threatened_guarded_pieces_count_white()));
+	ui.unopposed_threats_white_lineEdit->setText(QString::fromStdString(m_game.current_move().unopposed_threats_white()));
+	ui.unopposed_threats_count_white_lineEdit->setText(QString::number(m_game.current_move().unopposed_threats_count_white()));
+	ui.attackers_black_lineEdit->setText(QString::fromStdString(m_game.current_move().attackers_black()));
+	ui.attackers_count_black_lineEdit->setText(QString::number(m_game.current_move().attackers_count_black()));
+	ui.threatened_pieces_black_lineEdit->setText(QString::fromStdString(m_game.current_move().threatened_pieces_black()));
+	ui.threatened_pieces_count_black_lineEdit->setText(QString::number(m_game.current_move().threatened_pieces_count_black()));
+	ui.guards_black_lineEdit->setText(QString::fromStdString(m_game.current_move().guards_black()));
+	ui.guards_count_black_lineEdit->setText(QString::number(m_game.current_move().guards_count_black()));
+	ui.guarded_pieces_black_lineEdit->setText(QString::fromStdString(m_game.current_move().guarded_pieces_black()));
+	ui.guarded_pieces_count_black_lineEdit->setText(QString::number(m_game.current_move().guarded_pieces_count_black()));
+	ui.threatened_guarded_pieces_black_lineEdit->setText(QString::fromStdString(m_game.current_move().threatened_guarded_pieces_black()));
+	ui.threatened_guarded_pieces_count_black_lineEdit->setText(QString::number(m_game.current_move().threatened_guarded_pieces_count_black()));
+	ui.unopposed_threats_black_lineEdit->setText(QString::fromStdString(m_game.current_move().unopposed_threats_black()));
+	ui.unopposed_threats_count_black_lineEdit->setText(QString::number(m_game.current_move().unopposed_threats_count_black()));
 	m_scene->removeItem(m_svg);
 	m_svg->~QGraphicsSvgItem();
 	m_svg = new QGraphicsSvgItem(m_game.currentImagePath());

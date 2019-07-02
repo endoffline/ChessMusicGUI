@@ -9,9 +9,13 @@
 #include <QThread>
 #include <QtConcurrent\qtconcurrentrun.h>
 const char *FMODSoundscapeController::SINUS_WAVE_STR= "sinus_wave";
+const char *FMODSoundscapeController::UNOPPOSED_THREATS_STR = "unopposed_threats";
+const char *FMODSoundscapeController::IS_CAPTURE_STR = "is_capture";
+const char *FMODSoundscapeController::MISTAKE_STR = "mistake";
+const char *FMODSoundscapeController::POSSIBLE_MOVES_STR = "possible_moves";
 const char *FMODSoundscapeController::INTENSITY_STR = "Intensity";
 const char *FMODSoundscapeController::LEADING_STR = "Leading";
-const char *FMODSoundscapeController::POSSIBLE_MOVES_STR = "Possible Moves";
+
 const char *FMODSoundscapeController::IS_CHECK_STR = "Is Check";
 const char *FMODSoundscapeController::MOVE_CATEGORY_STR = "Move Category";
 const char *FMODSoundscapeController::ATTACKERS_COUNT_STR = "Attackers Count";
@@ -62,16 +66,24 @@ FMODSoundscapeController::FMODSoundscapeController() {
 
 	m_sinusWaveDirection = true;
 	m_fluctuatingScore = false;
-	m_sinusWave = -1.0f;
 	//Set initial FMOD Parameters
-	m_fmod_sinusWave = 0.0f;
+	m_fmod_sinusWave = -1.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(SINUS_WAVE_STR, m_fmod_sinusWave));
+
+	m_fmod_unopposedThreats = 0.0f;
+	ERRCHECK(m_eventInstance->setParameterValue(UNOPPOSED_THREATS_STR, m_fmod_unopposedThreats));
+	m_fmod_isCapture = 0.0f;
+	ERRCHECK(m_eventInstance->setParameterValue(IS_CAPTURE_STR, m_fmod_isCapture));
+	m_fmod_mistake = 0.0f;
+	ERRCHECK(m_eventInstance->setParameterValue(MISTAKE_STR, m_fmod_mistake));
+	m_fmod_possibleMoves = 100.0f;
+	ERRCHECK(m_eventInstance->setParameterValue(POSSIBLE_MOVES_STR, m_fmod_possibleMoves));
+
 	m_fmod_intensity = 0.0f;
 	//ERRCHECK(m_eventInstance->setParameterValue(INTENSITY_STR, m_fmod_intensity));
 	m_fmod_leadingPlayer = 0.0f;
 	//ERRCHECK(m_eventInstance->setParameterValue(LEADING_STR, m_fmod_leadingPlayer));
-	m_fmod_possibleMoves = 100.0f;
-	//ERRCHECK(m_eventInstance->setParameterValue(POSSIBLE_MOVES_STR, m_fmod_possibleMoves));
+	
 	m_fmod_isCheck = 0.0f;
 	//ERRCHECK(m_eventInstance->setParameterValue(IS_CHECK_STR, m_fmod_isCheck));
 	m_fmod_moveCategory = 1.0f;
@@ -82,32 +94,20 @@ FMODSoundscapeController::FMODSoundscapeController() {
 	ERRCHECK(m_system->update());
 
 	//std::thread loopThread([&]() {this->fmodLoop(); });
-
+	m_aborted = false;
 	QFuture<void> sinus_thread = QtConcurrent::run(this, &FMODSoundscapeController::fmodLoop, QString("A"));
 
 }
 
-// Obtain a lock and add a string entry to our list
-void FMODSoundscapeController::markerAddString(CallbackInfo* info, const char* format, ...)
-{
-	char buf[256];
-	va_list args;
-	va_start(args, format);
-	Common_vsnprintf(buf, 256, format, args);
-	va_end(args);
-	buf[255] = '\0';
-	Common_Mutex_Enter(&info->mMutex);
-	if (info->mEntries.size() >= 6)
-	{
-		info->mEntries.erase(info->mEntries.begin());
-	}
-	info->mEntries.push_back(std::string(buf));
-	Common_Mutex_Leave(&info->mMutex);
+void FMODSoundscapeController::abortSinusWave() {
+	qDebug() << "close 2";
+	m_aborted = true;
 }
 
 // stop when signal is received
 void FMODSoundscapeController::fmodLoop(QString name) {
 	while (true) {
+		if (m_aborted) return;
 		if (m_fluctuatingScore) {
 			if (m_fmod_sinusWave >= 1.0f) {
 				m_sinusWaveDirection = false;
@@ -118,7 +118,6 @@ void FMODSoundscapeController::fmodLoop(QString name) {
 
 			if (m_sinusWaveDirection) {
 				m_fmod_sinusWave += 0.01f;
-				qDebug() << "blub";
 			}
 			else {
 				m_fmod_sinusWave -= 0.01f;
@@ -130,54 +129,44 @@ void FMODSoundscapeController::fmodLoop(QString name) {
 		ERRCHECK(m_eventInstance->setParameterValue(SINUS_WAVE_STR, m_fmod_sinusWave));
 
 		ERRCHECK(m_system->update());
-		QThread::msleep(100);
-		qDebug() << "sleep" + QString::number(m_fmod_sinusWave);
+		QThread::msleep(50);
+		qDebug() << "score_shift_category: " + QString::number(m_fmod_sinusWave);
 		//std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
 
-// Callback from Studio - Remember these callbacks will occur in the Studio update thread, NOT the game thread.
-FMOD_RESULT F_CALLBACK FMODSoundscapeController::markerCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void *parameters)
-{
-	CallbackInfo* callbackInfo;
-	ERRCHECK(((FMOD::Studio::EventInstance*)event)->getUserData((void**)&callbackInfo));
-
-	if (type == FMOD_STUDIO_EVENT_CALLBACK_TIMELINE_MARKER)
-	{
-		FMOD_STUDIO_TIMELINE_MARKER_PROPERTIES* props = (FMOD_STUDIO_TIMELINE_MARKER_PROPERTIES*)parameters;
-		markerAddString(callbackInfo, "Named marker '%s'", props->name);
-	}
-	else if (type == FMOD_STUDIO_EVENT_CALLBACK_TIMELINE_BEAT)
-	{
-		FMOD_STUDIO_TIMELINE_BEAT_PROPERTIES* props = (FMOD_STUDIO_TIMELINE_BEAT_PROPERTIES*)parameters;
-		markerAddString(callbackInfo, "beat %d, bar %d (tempo %.1f %d:%d)", props->beat, props->bar, props->tempo, props->timesignatureupper, props->timesignaturelower);
-	}
-	if (type == FMOD_STUDIO_EVENT_CALLBACK_SOUND_PLAYED || type == FMOD_STUDIO_EVENT_CALLBACK_SOUND_STOPPED)
-	{
-		FMOD::Sound* sound = (FMOD::Sound*)parameters;
-		char name[256];
-		ERRCHECK(sound->getName(name, 256));
-		unsigned int len;
-		ERRCHECK(sound->getLength(&len, FMOD_TIMEUNIT_MS));
-
-		markerAddString(callbackInfo, "Sound '%s' (length %.3f) %s",
-			name, (float)len / 1000.0f,
-			type == FMOD_STUDIO_EVENT_CALLBACK_SOUND_PLAYED ? "Started" : "Stopped");
-	}
-
-	return FMOD_OK;
-}
-
 void FMODSoundscapeController::updateFMODValues(Models::Move move) {
 	qDebug() << "3";
-	int turn = 0;
-	int score = 0;
+	int turn = move.turn();
+	int score = move.score();
+	float score_shift_category = move.score_shift_category();
+	int unopposedThreatsCountWhite = move.unopposed_threats_count_white();
+	int unopposedThreatsCountBlack = move.unopposed_threats_count_black();
+	int is_capture = move.is_capture();
 	int isCheck = 0;
 	int moveCategory = 1;
 	int attackersCount = 0;
 
-	turn = move.turn();
-	score = move.score();
+	m_fluctuatingScore = score_shift_category > 1.0f;
+
+	m_fmod_unopposedThreats = (float)(turn) ? (float)unopposedThreatsCountBlack : (float)unopposedThreatsCountWhite;
+	ERRCHECK(m_eventInstance->setParameterValue(UNOPPOSED_THREATS_STR, m_fmod_unopposedThreats));
+
+	m_fmod_isCapture = (float)move.is_capture();
+	ERRCHECK(m_eventInstance->setParameterValue(IS_CAPTURE_STR, m_fmod_isCapture));
+	ERRCHECK(m_eventInstance->setParameterValue(IS_CAPTURE_STR, 0.0f));
+
+	moveCategory = move.best_move_score_difference_category();
+	m_fmod_mistake = (moveCategory >= 3) ? 1.0f : 0.0f;
+	ERRCHECK(m_eventInstance->setParameterValue(MISTAKE_STR, m_fmod_mistake));
+	ERRCHECK(m_eventInstance->setParameterValue(MISTAKE_STR, 0.0f));
+
+	m_fmod_possibleMoves = (float)move.possible_moves_count();
+	ERRCHECK(m_eventInstance->setParameterValue(POSSIBLE_MOVES_STR, m_fmod_possibleMoves));
+
+
+
+
 
 	m_fmod_leadingPlayer = (score < 0 ? 1.0f : 0.0f);
 	//ERRCHECK(m_eventInstance->setParameterValue(LEADING_STR, m_fmod_leadingPlayer));
@@ -190,8 +179,7 @@ void FMODSoundscapeController::updateFMODValues(Models::Move move) {
 	}
 	//ERRCHECK(m_eventInstance->setParameterValue(INTENSITY_STR, m_fmod_intensity));
 
-	m_fmod_possibleMoves = (float)move.possible_moves_count();
-	//ERRCHECK(m_eventInstance->setParameterValue(POSSIBLE_MOVES_STR, m_fmod_possibleMoves));
+
 
 	isCheck = move.is_check() == true;
 	if (isCheck)
@@ -208,7 +196,7 @@ void FMODSoundscapeController::updateFMODValues(Models::Move move) {
 	m_fmod_moveCategory = (float)moveCategory / 10.0f;
 	//ERRCHECK(m_eventInstance->setParameterValue(MOVE_CATEGORY_STR, m_fmod_moveCategory));
 
-	attackersCount = move.attackers_count();
+	attackersCount = move.attackers_count_white();
 	m_fmod_attackersCount = (float)attackersCount / 100.0f;
 	//ERRCHECK(m_eventInstance->setParameterValue(ATTACKERS_COUNT_STR, m_fmod_attackersCount));
 
@@ -241,4 +229,54 @@ void FMODSoundscapeController::updateFMODValues(Models::Move move) {
 	Common_Draw("");
 	Common_Draw("Press %s to toggle progression (currently %g)", Common_BtnStr(BTN_MORE), m_fmod_intensity);
 	Common_Draw("Press %s to quit", Common_BtnStr(BTN_QUIT));
+}
+
+// Obtain a lock and add a string entry to our list
+void FMODSoundscapeController::markerAddString(CallbackInfo* info, const char* format, ...)
+{
+	char buf[256];
+	va_list args;
+	va_start(args, format);
+	Common_vsnprintf(buf, 256, format, args);
+	va_end(args);
+	buf[255] = '\0';
+	Common_Mutex_Enter(&info->mMutex);
+	if (info->mEntries.size() >= 6)
+	{
+		info->mEntries.erase(info->mEntries.begin());
+	}
+	info->mEntries.push_back(std::string(buf));
+	Common_Mutex_Leave(&info->mMutex);
+}
+
+// Callback from Studio - Remember these callbacks will occur in the Studio update thread, NOT the game thread.
+FMOD_RESULT F_CALLBACK FMODSoundscapeController::markerCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void *parameters)
+{
+	CallbackInfo* callbackInfo;
+	ERRCHECK(((FMOD::Studio::EventInstance*)event)->getUserData((void**)&callbackInfo));
+
+	if (type == FMOD_STUDIO_EVENT_CALLBACK_TIMELINE_MARKER)
+	{
+		FMOD_STUDIO_TIMELINE_MARKER_PROPERTIES* props = (FMOD_STUDIO_TIMELINE_MARKER_PROPERTIES*)parameters;
+		markerAddString(callbackInfo, "Named marker '%s'", props->name);
+	}
+	else if (type == FMOD_STUDIO_EVENT_CALLBACK_TIMELINE_BEAT)
+	{
+		FMOD_STUDIO_TIMELINE_BEAT_PROPERTIES* props = (FMOD_STUDIO_TIMELINE_BEAT_PROPERTIES*)parameters;
+		markerAddString(callbackInfo, "beat %d, bar %d (tempo %.1f %d:%d)", props->beat, props->bar, props->tempo, props->timesignatureupper, props->timesignaturelower);
+	}
+	if (type == FMOD_STUDIO_EVENT_CALLBACK_SOUND_PLAYED || type == FMOD_STUDIO_EVENT_CALLBACK_SOUND_STOPPED)
+	{
+		FMOD::Sound* sound = (FMOD::Sound*)parameters;
+		char name[256];
+		ERRCHECK(sound->getName(name, 256));
+		unsigned int len;
+		ERRCHECK(sound->getLength(&len, FMOD_TIMEUNIT_MS));
+
+		markerAddString(callbackInfo, "Sound '%s' (length %.3f) %s",
+			name, (float)len / 1000.0f,
+			type == FMOD_STUDIO_EVENT_CALLBACK_SOUND_PLAYED ? "Started" : "Stopped");
+	}
+
+	return FMOD_OK;
 }

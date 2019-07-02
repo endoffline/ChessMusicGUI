@@ -18,6 +18,7 @@ class ChessMusicGUI : public QWidget
 public:
 	ChessMusicGUI(QWidget *parent = Q_NULLPTR);
 	~ChessMusicGUI();
+	void closeEvent(QCloseEvent *event);
 	Models::Game game();
 	void initValues();
 	void ChessMusicGUI::appendLogMessage(QPlainTextEdit *textEdit, const std::string& lan);
@@ -25,6 +26,7 @@ public Q_SLOTS:
 	void updateValues();
 Q_SIGNALS:
 	void updateFMOD(Models::Move current_move);
+	void closeWindow();
 private:
 	Ui::ChessMusicGUIClass ui;
 	Models::Game m_game;
