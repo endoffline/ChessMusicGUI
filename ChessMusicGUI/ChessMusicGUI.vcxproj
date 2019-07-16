@@ -89,7 +89,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>..\lowlevel\lib;..\studio\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>fmodstudio64_vc.lib;fmod64_vc.lib;qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Svg.lib;Qt5Widgets.lib;Qt5Qml.lib;Qt5Quick.lib;Qt5QuickWidgets.lib;Qt5QuickControls2.lib;Qt5QuickTest.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

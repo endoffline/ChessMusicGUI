@@ -29,7 +29,7 @@ private:
 	void fmodLoop(QString name);
 
 	static const int MAX_ENTRIES = 6;
-	static const char *SINUS_WAVE_STR;
+	static const char *FLUCTUATING_SCORE_STR;
 	static const char *UNOPPOSED_THREATS_STR;
 	static const char *IS_CAPTURE_STR;
 	static const char *MISTAKE_STR;
@@ -55,10 +55,10 @@ private:
 	FMOD::Studio::EventInstance *m_eventInstance;
 	CallbackInfo m_info;
 
-	bool m_sinusWaveDirection;
+	bool m_waveDirection;
 	bool m_fluctuatingScore;
 	bool m_aborted;
-	float m_fmod_sinusWave;
+	float m_fmod_fluctuating_score;
 	float m_fmod_unopposedThreats;
 	float m_fmod_isCapture;
 	float m_fmod_mistake;

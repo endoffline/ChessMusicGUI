@@ -8,7 +8,7 @@
 #include <chrono>
 #include <QThread>
 #include <QtConcurrent\qtconcurrentrun.h>
-const char *FMODSoundscapeController::SINUS_WAVE_STR= "sinus_wave";
+const char *FMODSoundscapeController::FLUCTUATING_SCORE_STR= "fluctuating_score";
 const char *FMODSoundscapeController::UNOPPOSED_THREATS_STR = "unopposed_threats";
 const char *FMODSoundscapeController::IS_CAPTURE_STR = "is_capture";
 const char *FMODSoundscapeController::MISTAKE_STR = "mistake";
@@ -64,11 +64,11 @@ FMODSoundscapeController::FMODSoundscapeController() {
 	//	FMOD_STUDIO_EVENT_CALLBACK_SOUND_PLAYED | FMOD_STUDIO_EVENT_CALLBACK_SOUND_STOPPED));
 	ERRCHECK(m_eventInstance->start());
 
-	m_sinusWaveDirection = true;
+	m_waveDirection = true;
 	m_fluctuatingScore = false;
 	//Set initial FMOD Parameters
-	m_fmod_sinusWave = -1.0f;
-	ERRCHECK(m_eventInstance->setParameterValue(SINUS_WAVE_STR, m_fmod_sinusWave));
+	m_fmod_fluctuating_score = -1.0f;
+	ERRCHECK(m_eventInstance->setParameterValue(FLUCTUATING_SCORE_STR, m_fmod_fluctuating_score));
 
 	m_fmod_unopposedThreats = 0.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(UNOPPOSED_THREATS_STR, m_fmod_unopposedThreats));
@@ -109,28 +109,28 @@ void FMODSoundscapeController::fmodLoop(QString name) {
 	while (true) {
 		if (m_aborted) return;
 		if (m_fluctuatingScore) {
-			if (m_fmod_sinusWave >= 1.0f) {
-				m_sinusWaveDirection = false;
+			if (m_fmod_fluctuating_score >= 1.0f) {
+				m_waveDirection = false;
 			}
-			else if (m_fmod_sinusWave <= 0) {
-				m_sinusWaveDirection = true;
+			else if (m_fmod_fluctuating_score <= 0) {
+				m_waveDirection = true;
 			}
 
-			if (m_sinusWaveDirection) {
-				m_fmod_sinusWave += 0.01f;
+			if (m_waveDirection) {
+				m_fmod_fluctuating_score += 0.01f;
 			}
 			else {
-				m_fmod_sinusWave -= 0.01f;
+				m_fmod_fluctuating_score -= 0.01f;
 			}
 		}
 		else {
-			m_fmod_sinusWave = -1.0f;
+			m_fmod_fluctuating_score = -1.0f;
 		}
-		ERRCHECK(m_eventInstance->setParameterValue(SINUS_WAVE_STR, m_fmod_sinusWave));
+		ERRCHECK(m_eventInstance->setParameterValue(FLUCTUATING_SCORE_STR, m_fmod_fluctuating_score));
 
 		ERRCHECK(m_system->update());
 		QThread::msleep(50);
-		qDebug() << "score_shift_category: " + QString::number(m_fmod_sinusWave);
+		qDebug() << "score_shift_category: " + QString::number(m_fmod_fluctuating_score);
 		//std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
