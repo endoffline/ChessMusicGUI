@@ -34,6 +34,7 @@ private:
 	static const char *IS_CAPTURE_STR;
 	static const char *MISTAKE_STR;
 	static const char *POSSIBLE_MOVES_STR;
+	static const char *CHIME_STR;
 
 	static const char *INTENSITY_STR;
 	static const char *LEADING_STR;
@@ -58,11 +59,13 @@ private:
 	bool m_waveDirection;
 	bool m_fluctuatingScore;
 	bool m_aborted;
+	float m_score;
 	float m_fmod_fluctuating_score;
 	float m_fmod_unopposedThreats;
 	float m_fmod_isCapture;
 	float m_fmod_mistake;
 	float m_fmod_possibleMoves;
+	float m_fmod_chime;
 
 	float m_fmod_intensity;
 	float m_fmod_leadingPlayer;

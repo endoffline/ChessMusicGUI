@@ -226,7 +226,7 @@ const char *Common_MediaPath(const char *fileName)
 {
     char *filePath = (char *)calloc(256, sizeof(char));
 
-    strcat(filePath, "../media/");
+    strcat(filePath, "./../media/");
     strcat(filePath, fileName);
     gPathList.push_back(filePath);
 

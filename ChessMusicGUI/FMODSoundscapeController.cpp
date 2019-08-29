@@ -13,6 +13,8 @@ const char *FMODSoundscapeController::UNOPPOSED_THREATS_STR = "unopposed_threats
 const char *FMODSoundscapeController::IS_CAPTURE_STR = "is_capture";
 const char *FMODSoundscapeController::MISTAKE_STR = "mistake";
 const char *FMODSoundscapeController::POSSIBLE_MOVES_STR = "possible_moves";
+const char *FMODSoundscapeController::CHIME_STR = "chime";
+
 const char *FMODSoundscapeController::INTENSITY_STR = "Intensity";
 const char *FMODSoundscapeController::LEADING_STR = "Leading";
 
@@ -51,7 +53,7 @@ FMODSoundscapeController::FMODSoundscapeController() {
 	}
 
 	m_eventDescription = NULL;
-	ERRCHECK(m_system->getEvent("event:/Soundscape", &m_eventDescription));
+	ERRCHECK(m_system->getEvent("event:/Soundscape 2", &m_eventDescription));
 
 	m_eventInstance = NULL;
 	ERRCHECK(m_eventDescription->createInstance(&m_eventInstance));
@@ -66,8 +68,10 @@ FMODSoundscapeController::FMODSoundscapeController() {
 
 	m_waveDirection = true;
 	m_fluctuatingScore = false;
+	m_score = 0.0f;
 	//Set initial FMOD Parameters
-	m_fmod_fluctuating_score = -1.0f;
+	m_fmod_fluctuating_score = -0.5f;
+	std::cout << "hello";
 	ERRCHECK(m_eventInstance->setParameterValue(FLUCTUATING_SCORE_STR, m_fmod_fluctuating_score));
 
 	m_fmod_unopposedThreats = 0.0f;
@@ -76,8 +80,11 @@ FMODSoundscapeController::FMODSoundscapeController() {
 	ERRCHECK(m_eventInstance->setParameterValue(IS_CAPTURE_STR, m_fmod_isCapture));
 	m_fmod_mistake = 0.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(MISTAKE_STR, m_fmod_mistake));
-	m_fmod_possibleMoves = 100.0f;
+	m_fmod_possibleMoves = 20.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(POSSIBLE_MOVES_STR, m_fmod_possibleMoves));
+
+	m_fmod_chime = 0.0f;
+	ERRCHECK(m_eventInstance->setParameterValue(CHIME_STR, m_fmod_chime));
 
 	m_fmod_intensity = 0.0f;
 	//ERRCHECK(m_eventInstance->setParameterValue(INTENSITY_STR, m_fmod_intensity));
@@ -109,10 +116,38 @@ void FMODSoundscapeController::fmodLoop(QString name) {
 	while (true) {
 		if (m_aborted) return;
 		if (m_fluctuatingScore) {
+			if (m_score >= 100) {
+				if (m_fmod_fluctuating_score >= 1.0f) {
+					m_waveDirection = false;
+				}
+				else if (m_fmod_fluctuating_score <= 0.5f) {
+					//m_fmod_fluctuating_score = 0.5f;
+					m_waveDirection = true;
+				}
+			}
+			else if (m_score <= -100) {
+				if (m_fmod_fluctuating_score >= 0.5f) {
+					m_waveDirection = false;
+				}
+				else if (m_fmod_fluctuating_score <= 0) {
+					//m_fmod_fluctuating_score = 0.0f;
+					m_waveDirection = true;
+				}
+			}
+			else {
+				if (m_fmod_fluctuating_score >= 0.75f) {
+					m_waveDirection = false;
+				}
+				else if (m_fmod_fluctuating_score <= 0.25) {
+					//m_fmod_fluctuating_score = 0.25f;
+					m_waveDirection = true;
+				}
+			}
 			if (m_fmod_fluctuating_score >= 1.0f) {
 				m_waveDirection = false;
 			}
 			else if (m_fmod_fluctuating_score <= 0) {
+				m_fmod_fluctuating_score = 0.0f;
 				m_waveDirection = true;
 			}
 
@@ -124,12 +159,21 @@ void FMODSoundscapeController::fmodLoop(QString name) {
 			}
 		}
 		else {
-			m_fmod_fluctuating_score = -1.0f;
+			if (m_score < -400) {
+				m_fmod_fluctuating_score = -0.9f;
+			}
+			else if (m_score > 400) {
+				m_fmod_fluctuating_score = -0.1f;
+			}
+			else {
+				m_fmod_fluctuating_score = (m_score / 1000) - 0.5f;
+			}
+			//m_fmod_fluctuating_score = -1.0f;
 		}
 		ERRCHECK(m_eventInstance->setParameterValue(FLUCTUATING_SCORE_STR, m_fmod_fluctuating_score));
 
 		ERRCHECK(m_system->update());
-		QThread::msleep(50);
+		QThread::msleep(100);
 		qDebug() << "score_shift_category: " + QString::number(m_fmod_fluctuating_score);
 		//std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
@@ -139,6 +183,7 @@ void FMODSoundscapeController::updateFMODValues(Models::Move move) {
 	qDebug() << "3";
 	int turn = move.turn();
 	int score = move.score();
+	m_score = score;
 	float score_shift_category = move.score_shift_category();
 	int unopposedThreatsCountWhite = move.unopposed_threats_count_white();
 	int unopposedThreatsCountBlack = move.unopposed_threats_count_black();
@@ -147,10 +192,12 @@ void FMODSoundscapeController::updateFMODValues(Models::Move move) {
 	int moveCategory = 1;
 	int attackersCount = 0;
 
+	bool prev_m_fluctuatingScore = m_fluctuatingScore;
 	m_fluctuatingScore = score_shift_category > 1.0f;
 
-	m_fmod_unopposedThreats = (float)(turn) ? (float)unopposedThreatsCountBlack : (float)unopposedThreatsCountWhite;
-	ERRCHECK(m_eventInstance->setParameterValue(UNOPPOSED_THREATS_STR, m_fmod_unopposedThreats));
+	float prev_m_fmod_unopposedThreats = m_fmod_unopposedThreats;
+	m_fmod_unopposedThreats = (float)(unopposedThreatsCountBlack + unopposedThreatsCountWhite); //(float)(turn) ? (float)unopposedThreatsCountBlack : (float)unopposedThreatsCountWhite;
+	//ERRCHECK(m_eventInstance->setParameterValue(UNOPPOSED_THREATS_STR, m_fmod_unopposedThreats));
 
 	m_fmod_isCapture = (float)move.is_capture();
 	ERRCHECK(m_eventInstance->setParameterValue(IS_CAPTURE_STR, m_fmod_isCapture));
@@ -164,7 +211,12 @@ void FMODSoundscapeController::updateFMODValues(Models::Move move) {
 	m_fmod_possibleMoves = (float)move.possible_moves_count();
 	ERRCHECK(m_eventInstance->setParameterValue(POSSIBLE_MOVES_STR, m_fmod_possibleMoves));
 
-
+	if (prev_m_fluctuatingScore != m_fluctuatingScore || prev_m_fmod_unopposedThreats != m_fmod_unopposedThreats || m_fmod_isCapture || m_fmod_mistake) {
+		m_fmod_chime = 900.0f;
+		ERRCHECK(m_eventInstance->setParameterValue(CHIME_STR, m_fmod_chime));
+		m_fmod_chime = 0.0f;
+		ERRCHECK(m_eventInstance->setParameterValue(CHIME_STR, m_fmod_chime));
+	}
 
 
 
