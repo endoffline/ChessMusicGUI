@@ -119,7 +119,8 @@ Models::Game CSVReader::loadGame() {
 			std::stoi(lineValues[45]),
 			std::stoi(lineValues[46]),
 			std::stoi(lineValues[47]),
-			std::stoi(lineValues[48])
+			std::stoi(lineValues[48]),
+			std::stoi(lineValues[59])
 		);
 		game.addMove(move);
 	}

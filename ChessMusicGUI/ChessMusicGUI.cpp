@@ -165,6 +165,7 @@ void ChessMusicGUI::updateValues() {
 	ui.threatened_guarded_pieces_count_black_lineEdit->setText(QString::number(m_game.current_move().threatened_guarded_pieces_count_black()));
 	ui.unopposed_threats_black_lineEdit->setText(QString::fromStdString(m_game.current_move().unopposed_threats_black()));
 	ui.unopposed_threats_count_black_lineEdit->setText(QString::number(m_game.current_move().unopposed_threats_count_black()));
+	ui.attack_defense_relation_lineEdit->setText(QString::number(m_game.current_move().attack_defense_relation()));
 	m_scene->removeItem(m_svg);
 	m_svg->~QGraphicsSvgItem();
 	m_svg = new QGraphicsSvgItem(m_game.currentImagePath());

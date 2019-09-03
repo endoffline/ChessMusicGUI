@@ -71,6 +71,8 @@ public:
     QLineEdit *unopposed_threats_white_lineEdit;
     QLabel *unopposed_threats_black_label;
     QLineEdit *unopposed_threats_black_lineEdit;
+    QLabel *attack_defense_relation_label;
+    QLineEdit *attack_defense_relation_lineEdit;
     QFormLayout *formLayout_2;
     QLabel *label;
     QLabel *attackers_white_label;
@@ -348,6 +350,16 @@ public:
         unopposed_threats_black_lineEdit->setObjectName(QString::fromUtf8("unopposed_threats_black_lineEdit"));
 
         formLayout->setWidget(5, QFormLayout::FieldRole, unopposed_threats_black_lineEdit);
+
+        attack_defense_relation_label = new QLabel(ChessMusicGUIClass);
+        attack_defense_relation_label->setObjectName(QString::fromUtf8("attack_defense_relation_label"));
+
+        formLayout->setWidget(23, QFormLayout::LabelRole, attack_defense_relation_label);
+
+        attack_defense_relation_lineEdit = new QLineEdit(ChessMusicGUIClass);
+        attack_defense_relation_lineEdit->setObjectName(QString::fromUtf8("attack_defense_relation_lineEdit"));
+
+        formLayout->setWidget(23, QFormLayout::FieldRole, attack_defense_relation_lineEdit);
 
 
         horizontalLayout_3->addLayout(formLayout);
@@ -643,6 +655,7 @@ public:
         possible_moves_count_label->setText(QApplication::translate("ChessMusicGUIClass", "No of possible moves", nullptr));
         unopposed_threats_white_label->setText(QApplication::translate("ChessMusicGUIClass", "Unopposed threats White", nullptr));
         unopposed_threats_black_label->setText(QApplication::translate("ChessMusicGUIClass", "Unopposed threats Black", nullptr));
+        attack_defense_relation_label->setText(QApplication::translate("ChessMusicGUIClass", "Attack/defense relation", nullptr));
         label->setText(QApplication::translate("ChessMusicGUIClass", "White", nullptr));
         attackers_white_label->setText(QApplication::translate("ChessMusicGUIClass", "Attackers", nullptr));
         attackers_count_white_label->setText(QApplication::translate("ChessMusicGUIClass", "No of Attackers", nullptr));

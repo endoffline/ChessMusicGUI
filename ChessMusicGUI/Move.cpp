@@ -53,7 +53,8 @@ namespace Models {
 		int threatened_pieces_centipawn_black,
 		int guarded_pieces_centipawn_black,
 		int threatened_guarded_pieces_centipawn_black,
-		int unopposed_threats_centipawn_black
+		int unopposed_threats_centipawn_black,
+		int attack_defense_relation
 	) : m_fullmove_number(fullmove_number),
 		m_turn(turn),
 		m_san(san),
@@ -102,7 +103,8 @@ namespace Models {
 		m_threatened_pieces_centipawn_black(threatened_pieces_centipawn_black),
 		m_guarded_pieces_centipawn_black(guarded_pieces_centipawn_black),
 		m_threatened_guarded_pieces_centipawn_black(threatened_guarded_pieces_centipawn_black),
-		m_unopposed_threats_centipawn_black(unopposed_threats_centipawn_black)
+		m_unopposed_threats_centipawn_black(unopposed_threats_centipawn_black),
+		m_attack_defense_relation(attack_defense_relation)
 		{
 	}
 
@@ -299,6 +301,10 @@ namespace Models {
 
 	int Move::unopposed_threats_centipawn_black() const {
 		return m_unopposed_threats_centipawn_black;
+	}
+
+	int Move::attack_defense_relation() const {
+		return m_attack_defense_relation;
 	}
 
 

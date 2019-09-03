@@ -32,9 +32,12 @@ private:
 	static const char *FLUCTUATING_SCORE_STR;
 	static const char *UNOPPOSED_THREATS_STR;
 	static const char *IS_CAPTURE_STR;
+	static const char *BLUNDER_STR;
 	static const char *MISTAKE_STR;
+	static const char *INACCURACY_STR;
 	static const char *POSSIBLE_MOVES_STR;
 	static const char *CHIME_STR;
+	static const char *ATTACK_DEFENSE_RELATION_STR;
 
 	static const char *INTENSITY_STR;
 	static const char *LEADING_STR;
@@ -63,9 +66,12 @@ private:
 	float m_fmod_fluctuating_score;
 	float m_fmod_unopposedThreats;
 	float m_fmod_isCapture;
+	float m_fmod_blunder;
 	float m_fmod_mistake;
+	float m_fmod_inaccuracy;
 	float m_fmod_possibleMoves;
 	float m_fmod_chime;
+	float m_fmod_attack_defense_relation;
 
 	float m_fmod_intensity;
 	float m_fmod_leadingPlayer;

@@ -60,7 +60,8 @@ namespace Models {
 			int threatened_pieces_centipawn_black = 0,
 			int guarded_pieces_centipawn_black = 0,
 			int threatened_guarded_pieces_centipawn_black = 0,
-			int unopposed_threats_centipawn_black = 0
+			int unopposed_threats_centipawn_black = 0,
+			int attack_defense_relation = 0
 		);
 
 		int fullmove_number() const;
@@ -121,6 +122,7 @@ namespace Models {
 		int guarded_pieces_centipawn_black() const;
 		int threatened_guarded_pieces_centipawn_black() const;
 		int unopposed_threats_centipawn_black() const;
+		int attack_defense_relation() const;
 
 		friend std::ostream& operator<<(std::ostream& out, const Move& move);
 
@@ -183,5 +185,7 @@ namespace Models {
 		int m_guarded_pieces_centipawn_black;
 		int m_threatened_guarded_pieces_centipawn_black;
 		int m_unopposed_threats_centipawn_black;
+
+		int m_attack_defense_relation;
 	};
 }
