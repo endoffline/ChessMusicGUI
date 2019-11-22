@@ -39,6 +39,7 @@ ChessMusicGUI::ChessMusicGUI(QWidget *parent)
 	//connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODController::updateFMODValues);
 	connect(this, &ChessMusicGUI::updateFMOD, &m_fmod_controller, &FMODSoundscapeController::updateFMODValues);
 	connect(this, &ChessMusicGUI::closeWindow, &m_fmod_controller, &FMODSoundscapeController::abortSinusWave);
+	connect(&m_game, &Models::Game::gameHasEnded, &m_fmod_controller, &FMODSoundscapeController::gamePhaseChanged);
 	connect(m_autoplay, &AutoplayChess::nextMove, &m_game, &Models::Game::nextMoveReceived);
 	
 	m_autoplay_thread->start();

@@ -17,6 +17,7 @@ const char *FMODSoundscapeController::INACCURACY_STR = "mistake2";
 const char *FMODSoundscapeController::POSSIBLE_MOVES_STR = "possible_moves";
 const char *FMODSoundscapeController::CHIME_STR = "chime";
 const char *FMODSoundscapeController::ATTACK_DEFENSE_RELATION_STR = "attack_defense";
+const char *FMODSoundscapeController::GAME_PHASE_STR = "game_phase";
 
 const char *FMODSoundscapeController::INTENSITY_STR = "Intensity";
 const char *FMODSoundscapeController::LEADING_STR = "Leading";
@@ -71,6 +72,7 @@ FMODSoundscapeController::FMODSoundscapeController() {
 
 	m_waveDirection = true;
 	m_fluctuatingScore = false;
+	m_hasEnded = false;
 	m_score = 0.0f;
 	//Set initial FMOD Parameters
 	m_fmod_fluctuating_score = -0.5f;
@@ -95,6 +97,9 @@ FMODSoundscapeController::FMODSoundscapeController() {
 
 	m_fmod_attack_defense_relation = 0.0f;
 	ERRCHECK(m_eventInstance->setParameterValue(ATTACK_DEFENSE_RELATION_STR, m_fmod_attack_defense_relation));
+
+	m_fmod_game_phase = 0.0f;
+	ERRCHECK(m_eventInstance->setParameterValue(GAME_PHASE_STR, m_fmod_game_phase));
 
 	m_fmod_intensity = 0.0f;
 	//ERRCHECK(m_eventInstance->setParameterValue(INTENSITY_STR, m_fmod_intensity));
@@ -121,12 +126,18 @@ void FMODSoundscapeController::abortSinusWave() {
 	m_aborted = true;
 }
 
+void FMODSoundscapeController::gamePhaseChanged(bool hasEnded) {
+	qDebug() << "gamePhaseChanged" << hasEnded;
+	m_hasEnded = hasEnded;
+}
+
 // stop when signal is received
 void FMODSoundscapeController::fmodLoop(QString name) {
 	while (true) {
 		if (m_aborted) return;
 		if (m_fluctuatingScore) {
-			if (m_score <= -100) {
+
+			if (m_score <= -300) {
 				if (m_fmod_fluctuating_score >= 1.0f) {
 					m_waveDirection = false;
 				}
@@ -135,11 +146,29 @@ void FMODSoundscapeController::fmodLoop(QString name) {
 					m_waveDirection = true;
 				}
 			}
+			else if (m_score <= -100) {
+				if (m_fmod_fluctuating_score >= 0.75f) {
+					m_waveDirection = false;
+				}
+				else if (m_fmod_fluctuating_score <= 0.5f) {
+					//m_fmod_fluctuating_score = 0.5f;
+					m_waveDirection = true;
+				}
+			}
 			else if (m_score >= 100) {
+				if (m_fmod_fluctuating_score >= 0.5f) {
+					m_waveDirection = false;
+				}
+				else if (m_fmod_fluctuating_score <= 0.25f) {
+					//m_fmod_fluctuating_score = 0.0f;
+					m_waveDirection = true;
+				}
+			}
+			else if (m_score >= 300) {
 				if (m_fmod_fluctuating_score >= 0.25f) {
 					m_waveDirection = false;
 				}
-				else if (m_fmod_fluctuating_score <= 0) {
+				else if (m_fmod_fluctuating_score <= 0.0f) {
 					//m_fmod_fluctuating_score = 0.0f;
 					m_waveDirection = true;
 				}
@@ -169,7 +198,7 @@ void FMODSoundscapeController::fmodLoop(QString name) {
 			}
 		}
 		else {
-			if (m_score < -400) {
+			/*if (m_score < -400) {
 				m_fmod_fluctuating_score = -0.9f;
 			}
 			else if (m_score > 400) {
@@ -177,14 +206,30 @@ void FMODSoundscapeController::fmodLoop(QString name) {
 			}
 			else {
 				m_fmod_fluctuating_score = (m_score / 1000) - 0.5f;
+			}*/
+
+			if (m_score < -300) {
+				m_fmod_fluctuating_score = 1.0f;
+			}
+			else if (m_score >= -300 && m_score < -100) {
+				m_fmod_fluctuating_score = 0.75f;
+			}
+			else if (m_score >= -100 && m_score < 100) {
+				m_fmod_fluctuating_score = 0.5f;
+			}
+			else if (m_score >= 100 && m_score < 300) {
+				m_fmod_fluctuating_score = 0.25f;
+			}
+			else if (m_score > 300) {
+				m_fmod_fluctuating_score = 0.0f;
 			}
 			//m_fmod_fluctuating_score = -1.0f;
 		}
 		ERRCHECK(m_eventInstance->setParameterValue(FLUCTUATING_SCORE_STR, m_fmod_fluctuating_score));
 
 		ERRCHECK(m_system->update());
-		QThread::msleep(150);
-		qDebug() << "score_shift_category: " + QString::number(m_fmod_fluctuating_score);
+		QThread::msleep(100);
+		//qDebug() << "score_shift_category: " + QString::number(m_fmod_fluctuating_score);
 		//std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
@@ -251,7 +296,16 @@ void FMODSoundscapeController::updateFMODValues(Models::Move move) {
 	}
 	ERRCHECK(m_eventInstance->setParameterValue(ATTACK_DEFENSE_RELATION_STR, m_fmod_attack_defense_relation));
 
+	if (m_hasEnded) {
+		qDebug() << "has Ended true";
+		m_fmod_game_phase = 1.0f;
+	}
+	else {
+		qDebug() << "has Ended false";
+		m_fmod_game_phase = 0.0f;
 
+	}
+	ERRCHECK(m_eventInstance->setParameterValue(GAME_PHASE_STR, m_fmod_game_phase));
 
 	m_fmod_leadingPlayer = (score < 0 ? 1.0f : 0.0f);
 	//ERRCHECK(m_eventInstance->setParameterValue(LEADING_STR, m_fmod_leadingPlayer));

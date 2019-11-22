@@ -34,6 +34,7 @@ namespace Models {
 		void previousMoveReceived();
 	Q_SIGNALS:
 		void valuesChanged();
+		void gameHasEnded(bool hasEnded);
 	private:
 		static const int c_min_index = -1;
 		QString m_path;

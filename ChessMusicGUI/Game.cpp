@@ -36,14 +36,23 @@ namespace Models {
 	}
 
 	Move Game::nextMove() {
-		
-		if (m_current_move < m_moves.size() -1) {
+		qDebug() << "nextMove triggered";
+		if (m_current_move < m_moves.size() - 1) {
 			m_current_move++;
+		}
+		if (m_current_move == m_moves.size() - 1) {
+			qDebug() << "previousMove stop sound";
+			emit gameHasEnded(true);
 		}
 		return m_moves.at(m_current_move);
 	}
 
 	Move Game::previousMove() {
+		qDebug() << "previousMove triggered";
+		if (m_current_move <= m_moves.size() - 1) {
+			qDebug() << "previousMove start sound";
+			emit gameHasEnded(false);
+		}
 		if (m_current_move > c_min_index + 1) {
 			m_current_move--;
 		}

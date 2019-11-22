@@ -25,6 +25,7 @@ public:
 	public Q_SLOTS:
 	void updateFMODValues(Models::Move move);
 	void abortSinusWave();
+	void gamePhaseChanged(bool hasEnded);
 private:
 	void fmodLoop(QString name);
 
@@ -38,6 +39,7 @@ private:
 	static const char *POSSIBLE_MOVES_STR;
 	static const char *CHIME_STR;
 	static const char *ATTACK_DEFENSE_RELATION_STR;
+	static const char *GAME_PHASE_STR;
 
 	static const char *INTENSITY_STR;
 	static const char *LEADING_STR;
@@ -62,6 +64,7 @@ private:
 	bool m_waveDirection;
 	bool m_fluctuatingScore;
 	bool m_aborted;
+	bool m_hasEnded;
 	float m_score;
 	float m_fmod_fluctuating_score;
 	float m_fmod_unopposedThreats;
@@ -72,6 +75,7 @@ private:
 	float m_fmod_possibleMoves;
 	float m_fmod_chime;
 	float m_fmod_attack_defense_relation;
+	float m_fmod_game_phase;
 
 	float m_fmod_intensity;
 	float m_fmod_leadingPlayer;
@@ -79,4 +83,6 @@ private:
 	float m_fmod_isCheck;
 	float m_fmod_moveCategory;
 	float m_fmod_attackersCount;
+
+	
 };
